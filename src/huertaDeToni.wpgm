@@ -4,6 +4,8 @@ import plantas.*
 import pachamama.*
 
 program huertaDeToni {
+	var plantas = []
+	
 	game.width(15)
 	game.height(15)
 	
@@ -11,7 +13,15 @@ program huertaDeToni {
 	game.ground("tierra.png")
 	
 	// Agregamos al amigo Toni.
-	game.addVisual(toni)
+	/** (Danny)
+      *Cambié "addVisual" por "addVisualCharacter"
+      *este método agrega a "toni" y le da por defecto los
+      *movimietos con las flechas, sin necesidad de tener que
+      *programarlos.
+      */
+  //game.addVisual(toni) 
+	game.addVisualCharacter(toni) 
+	
 	
 	/*
 	 * Acá usamos addVisualIn en vez de addVisual, y por esto 
@@ -31,5 +41,43 @@ program huertaDeToni {
 	 */
 	(1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
 		
+	
+	/**controles */ 
+	
+	/**Agraga un maiz al presionar "M" en la posición actual de Toni 
+       (Danny)*/
+	keyboard.m().onPressDo ({
+		var maiz = new Maiz(position = toni.position().right(1))
+		toni.agregarMaiz(maiz)
+		game.addVisual(maiz)
+		plantas.add(maiz)
+	})
+	
+	/**Agraga un trigo al presionar "M" en la posición actual de Toni 
+       (Danny)*/
+	keyboard.t().onPressDo ({
+		var trigo = new Trigo(position = toni.position().right(1))
+		toni.agregarMaiz(trigo)
+		game.addVisual(trigo)
+		plantas.add(trigo)
+	})
+	
+	/**Agraga un tomaco al presionar "O" en la posición actual de Toni 
+       (Danny)*/
+	keyboard.o().onPressDo ({
+		var tomaco = new Tomaco(position = toni.position().right(1))
+		toni.agregarMaiz(tomaco)
+		game.addVisual(tomaco)
+		plantas.add(tomaco)
+	})
+	
+	/**Riega todas las plnatas del tablero */
+	keyboard.a().onPressDo({ plantas.forEach({ plan => plan.crecer() }) })
+	
+	/**Riega la planta en la posición actual de Toni y la hce crecer a su siguiente etapa (Danny) */
+	keyboard.r().onPressDo({ game.colliders(toni).forEach({ p => p.crecer() }) })
+	
+	
+	
 	game.start()
 }
