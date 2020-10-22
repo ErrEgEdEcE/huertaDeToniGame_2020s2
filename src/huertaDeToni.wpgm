@@ -1,6 +1,6 @@
 import wollok.game.*
-import toni.*
-import plantas.*
+import Toni.*
+import Plantas.*
 import pachamama.*
 
 program huertaDeToni {
@@ -38,7 +38,7 @@ program huertaDeToni {
 	 * De yapa, mostramos cómo agregar varios objetos de una utilizando
 	 * un rango (1..13), que equivale a la lista [1, 2, 3, ..., 13].
 	 */
-	(1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
+	// (1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
 		
 	
 	/**controles */ 
@@ -47,7 +47,7 @@ program huertaDeToni {
        (Danny)*/
 	keyboard.m().onPressDo ({
 		var maiz = new Maiz(position = toni.position().right(1))
-		toni.agregarMaiz(maiz)
+		toni.sembrarPlanta(maiz)
 		game.addVisual(maiz)
 	})
 	
@@ -55,7 +55,7 @@ program huertaDeToni {
        (Danny)*/
 	keyboard.t().onPressDo ({
 		var trigo = new Trigo(position = toni.position().right(1))
-		toni.agregarMaiz(trigo)
+		toni.sembrarPlanta(trigo)
 		game.addVisual(trigo)
 	})
 	
@@ -63,16 +63,39 @@ program huertaDeToni {
        (Danny)*/
 	keyboard.o().onPressDo ({
 		var tomaco = new Tomaco(position = toni.position().right(1))
-		toni.agregarMaiz(tomaco)
+		toni.sembrarPlanta(tomaco)
 		game.addVisual(tomaco)
 	})
 	
 	/**Riega todas las plnatas del tablero */
-	keyboard.a().onPressDo({ game.allVisuals().forEach({ plan => plan.crecer() }) })
+	keyboard.a().onPressDo({ toni.regarLasPlantas() })
 	
 	/**Riega la planta en la posición actual de Toni y la hce crecer a su siguiente etapa (Danny) */
-	keyboard.r().onPressDo({ game.colliders(toni).forEach({ p => p.crecer() }) })
+	keyboard.r().onPressDo({ game.colliders(toni).forEach({ p => toni.regarPlanta(p) }) })
 	
+	/**Cochecha todas la plantas listas del tablero que esten listas (Danny) */
+	keyboard.x().onPressDo({ 
+		toni.plantasListasParaCosechar().forEach({ p => game.removeVisual(p) })
+		toni.cosecharTodo()
+	})
+	
+	/**Cosecha las plantas listas en la posiscion actaul de Toni (Danny) */
+	keyboard.c().onPressDo({ 
+		game.colliders(toni).forEach({ p => toni.cosechar(p); 
+			if (toni.plantasCosechadas().contains(p)) {
+				game.removeVisual(p)
+			}
+		})
+	})
+	
+	/**Vende todas las plantas cosechadas hasta el momento (Danny) */
+	keyboard.v().onPressDo({ toni.venderCosecha() })
+	
+	/**Devuelve la cantidad de oro de toni y cuantas plantas le queda para vender (Danny) */
+	keyboard.space().onPressDo({ 
+		game.say(toni, "Tengo " + toni.oro() + " monedas" + 
+		" y me qudan " + toni.plantasCosechadas().size() + " plantas para vender" )
+	})
 	
 	
 	game.start()

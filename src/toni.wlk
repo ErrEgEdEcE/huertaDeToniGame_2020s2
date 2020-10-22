@@ -1,51 +1,33 @@
 import wollok.game.*
+import Plantas.*
 
 object toni {
 	const property image = "toni.png"
 	var property position = game.at(3, 3)
+	var property oro = 0
 	
-	// Pegar acá todo lo que tenían de Toni en la etapa 1
+	var property plantasSembradas = [] 
+	var property plantasCosechadas = []
 	
-	var property maizPlantado = []
-	var property trigoPlantado = [] 
-	var property tomacoPlantado = []
+	method sembrarPlanta(unaPlanta) { plantasSembradas.add(unaPlanta) }
 	
-
-	method agregarMaiz(maiz){
-		maizPlantado.add(maiz)
+	method regarLasPlantas() { plantasSembradas.forEach({ p => p.crecer() }) } 
+	
+	method regarPlanta(unaPlanta) { if (plantasSembradas.contains(unaPlanta)) unaPlanta.crecer() }
+	
+	method plantasListasParaCosechar() = plantasSembradas.filter({ p => p.estaLista() })
+	
+	method cosechar(unaPlanta) { 
+		if (self.plantasListasParaCosechar().contains(unaPlanta)) {
+			plantasSembradas.remove(unaPlanta); plantasCosechadas.add(unaPlanta)
+	    }
 	}
 	
-	method sacarMaiz(maiz){
-		maizPlantado.remove(maiz)
+	method cosecharTodo() { self.plantasListasParaCosechar().forEach({ p => self.cosechar(p) }) }
+	
+	method venderPlanta(unaPlanta) { oro += unaPlanta.valor(); plantasCosechadas.remove(unaPlanta) }
+	
+	method venderCosecha() { 
+		plantasCosechadas.forEach({ p => self.venderPlanta(p) })
 	}
-	
-	
-	/**Funciones para el trigo (Danny) */
-	
-	/**Suma una instancia de "Trigo" a la lista "trigoPlantado" (Danny) */
-	method agregarTrigo(trigo){
-		trigoPlantado.add(trigo)
-	}
-	
-	/**Saca una instancia de "Trigo" a la lista "trigoPlantado" (Danny) */
-	method sacarTrigo(trigo){
-		trigoPlantado.remove(trigo)
-	}
-	
-	
-	/**Funciones para el tomaco (Danny) */
-	
-	/**Suma una instancia de "tomaco" a la lista "tomacoPlantado" (Danny) */
-	method agregarTomaco(tomaco){
-		trigoPlantado.add(tomaco)
-	}
-	
-	/**Saca una instancia de "tomaco" a la lista "tomacoPlantado" (Danny) */
-	method sacarTomaco(tomaco){
-		trigoPlantado.remove(tomaco)
-	}
-	
-	
-	method regarPlanta(unaPlanta) { unaPlanta.crecer() }
-	
 }

@@ -1,38 +1,42 @@
+import wollok.game.*
+
 class Maiz {
-	var property position /**Para que el Maiz tenga una posición (Danny) */
-	var tamanio = 0
+	var property position 
+	var property image = "maiz_bebe.png"
+	const property valor = 150
 	
-	method image() {
-		if (tamanio == 0){
-			return "maiz_bebe.png"
-		} else {
-			return "maiz_adulto.png"
+	method crecer() {
+		if (image == "maiz_bebe.png") {
+			image = "maiz_adulto.png"
 		}
 	}
 	
-	method crecer() { tamanio += 1 }
-	
-	
+	method estaLista() = image == "maiz_adulto.png"
 }
 
-class Trigo inherits Maiz { /**(Danny) */
+class Trigo {
+	var property position 
+	const estados = ["trigo_0.png", "trigo_1.png","trigo_2.png","trigo_3.png"]
+	var indiceEstado = 0
+	const property valor = 100
 	
-	override method image() {
-		if (tamanio == 0){
-			return "trigo_0.png"
-		} else if (tamanio == 1) {
-			return "trigo_1.png"
-		} else if (tamanio == 2) {
-			return "trigo_2.png"
-		} else {
-			return "trigo_3.png"
-		}
+	method crecer() {
+		indiceEstado += 1
 	}
+	
+	method image() = estados.get(indiceEstado % 4)
+	
+	method estaLista() = indiceEstado >= 2
 }
 
-class Tomaco inherits Maiz { /**(Danny) */
 
-	override method image() = "tomaco_ok.png"
+
+class Tomaco {
+	var property position 
+	var property image = "tomaco_ok.png"
+	const property valor = 80
+	
+	method crecer() {}
+	
+	method estaLista() = true
 }
-
-// Agregar las demás plantas y completar el Maiz.
