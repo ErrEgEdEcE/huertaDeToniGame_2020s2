@@ -1,6 +1,6 @@
 import wollok.game.*
-import Toni.*
-import Plantas.*
+import toni.*
+import plantas.*
 import pachamama.*
 
 program huertaDeToni {
@@ -57,6 +57,7 @@ program huertaDeToni {
 		var trigo = new Trigo(position = toni.position().right(1))
 		toni.sembrarPlanta(trigo)
 		game.addVisual(trigo)
+
 	})
 	
 	/**Agraga un tomaco al presionar "O" en la posición actual de Toni 
@@ -97,6 +98,11 @@ program huertaDeToni {
 		" y me qudan " + toni.plantasCosechadas().size() + " plantas para vender" )
 	})
 	
+	/** Al presionar F, muestra el mensaje que está fumigado. (Caro) */
+	keyboard.f().onPressDo({ pachamama.fumigar() })
+	
+	/** Al presionar L, logrará que llueva y las plantas se rieguen (Caro) */
+	keyboard.l().onPressDo({ pachamama.llover() })
 	
 	game.start()
 }

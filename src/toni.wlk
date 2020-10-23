@@ -1,5 +1,6 @@
 import wollok.game.*
-import Plantas.*
+import plantas.*
+import pachamama.*
 
 object toni {
 	const property image = "toni.png"
@@ -9,8 +10,11 @@ object toni {
 	var property plantasSembradas = [] 
 	var property plantasCosechadas = []
 	
-	method sembrarPlanta(unaPlanta) { plantasSembradas.add(unaPlanta) }
-	
+	method sembrarPlanta(unaPlanta) { 
+		plantasSembradas.add(unaPlanta) 
+		if (unaPlanta.position() == unaPlanta.position() ) { /**aparece siempre (Caro).*/ 
+			game.say(self, "Ya hay una planta") }  }		 
+			
 	method regarLasPlantas() { plantasSembradas.forEach({ p => p.crecer() }) } 
 	
 	method regarPlanta(unaPlanta) { if (plantasSembradas.contains(unaPlanta)) unaPlanta.crecer() }
@@ -19,9 +23,12 @@ object toni {
 	
 	method cosechar(unaPlanta) { 
 		if (self.plantasListasParaCosechar().contains(unaPlanta)) {
-			plantasSembradas.remove(unaPlanta); plantasCosechadas.add(unaPlanta)
-	    }
-	}
+			plantasSembradas.remove(unaPlanta); plantasCosechadas.add(unaPlanta) } 
+		else (unaPlanta.noEstaLista()) return { 
+	    	game.say(self, "No está lista") }
+	    /**Tengo problemas con las posiciones (Caro)
+	    Tiene que dar el mensaje cuando no hay nada. */ 
+	   }
 	
 	method cosecharTodo() { self.plantasListasParaCosechar().forEach({ p => self.cosechar(p) }) }
 	
