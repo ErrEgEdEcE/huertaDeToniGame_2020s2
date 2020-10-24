@@ -37,4 +37,13 @@ object toni {
 	method venderCosecha() { 
 		plantasCosechadas.forEach({ p => self.venderPlanta(p) })
 	}
+	
+	/**Estos son metodos que faltaban en la etapa 1 (Danny) */
+	method valorDeCosecha() = plantasCosechadas.sum({p => p.valor()})
+	
+	method paraCuantosDiasLeAlcanza() = (oro + self.valorDeCosecha()) / 200
+	
+	method cuantoHayParaCeliacos() = self.plantasListasParaCosechar().filter({ p => not p.tieneGluten() }).size()
+	
+	method convieneRegar() = plantasSembradas.any({ p => not p.estaLista() })
 }
