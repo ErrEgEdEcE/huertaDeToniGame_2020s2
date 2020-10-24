@@ -1,9 +1,9 @@
 import wollok.game.*
+import pachamama.*
 
 class Maiz {
 	var property position 
 	var property image = "maiz_bebe.png"
-	const property valor = 150
 	
 	method crecer() {
 		if (image == "maiz_bebe.png") {
@@ -13,6 +13,11 @@ class Maiz {
 	
 	method estaLista() = image == "maiz_adulto.png"
 	method tieneGluten() = false
+	method valor() {
+		const plusAgradecimiento = if (pachamama.estaAgradecida()) 20 else 0 
+		
+		return 150 + plusAgradecimiento
+	}
 }
 
 class Trigo {
@@ -22,7 +27,9 @@ class Trigo {
 	const property valor = 100
 	
 	method crecer() {
-		indiceEstado += 1
+		const plusAgradecimiento = if (pachamama.estaAgradecida()) 1 else 0 
+		
+		indiceEstado += 1 + plusAgradecimiento
 	}
 	
 	method image() = estados.get(indiceEstado % 4)
@@ -37,6 +44,8 @@ class Tomaco {
 	var property position 
 	var property image = "tomaco_ok.png"
 	const property valor = 80
+	
+	method image() = if (pachamama.estaAgradecida()) "tomaco_podrido.png" else "tomaco_ok.png"
 	
 	method crecer() {}
 	

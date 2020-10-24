@@ -640,11 +640,93 @@ function setDocumentScrollTop(ypos)
 </head>
 <body class="markdown-body">
 <h1> <a id="la-huerta-de-toni---game" class="anchor" href="#la-huerta-de-toni---game" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>La huerta de Toni - Game</h1> 
-<h2> <a id="etapa-1---caminar-sembrar-regar-y-vender" class="anchor" href="#etapa-1---caminar-sembrar-regar-y-vender" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Etapa 1 - caminar, sembrar, regar y vender</h2> 
 <h3> <a id="intro" class="anchor" href="#intro" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Intro</h3> 
 <p>Toni es un <a href="https://www.youtube.com/channel/UC8nVWi8L7fPCjOMpSSNAM0Q" rel="nofollow">amigo youtuber</a> que se gana la vida cultivando plantas de distintas especies. Para ello tiene que sembrar, regar y cosechar sus cultivos. Despu&eacute;s de la cosecha, Toni vende lo que cultiv&oacute;, obteniendo ganancias en la forma de monedas de oro. Toni es muy ahorrativo y todo el oro que obtiene por sus cosechas lo acumula.</p> 
-<p>Nuestro objetivo es construir un juego en el que podamos controlar a Toni, utilizando el teclado para moverlo alrededor del tablero. Las plantas y el comportamiento de Toni son los que ya agregamos en la primera etapa, aqu&iacute; agregaremos algunas cosas para convertirlo en un juego.</p> 
-<p>Antes de empezar, copien las definiciones de Toni, las plantas y la Pachamama en los archivos que dejamos ya preparados para ello.</p> 
+<p>Nuestro objetivo es construir un juego en el que podamos controlar a Toni, utilizando el teclado para moverlo alrededor del tablero. Las plantas y el comportamiento de Toni son los los que se encuentran en la <strong>Etapa 1 - sembrar, regar, vender y consultas a Toni</strong> de enunciado, en la segunda le agregaremos algunas cosas para convertirlo en un juego.</p> 
+<h2> <a id="etapa-1" class="anchor" href="#etapa-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Etapa 1</h2> 
+<p>En esta primera parte vamos a concentrarnos solamente en programar las clases y objetos necesarios para modelar los siguientes comportamientos de Toni.</p> 
+<ul> 
+ <li>Sembrar</li> 
+ <li>Regar</li> 
+ <li>Vender</li> 
+ <li>Consultar a Toni</li> 
+</ul> 
+<p>En este juego consideramos tres especies: <strong><em>ma&iacute;z</em></strong>, <strong><em>trigo</em></strong> y <strong><em>tomaco</em></strong>.</p> 
+<h3> <a id="sembrar" class="anchor" href="#sembrar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sembrar</h3> 
+<p>El acto de sembrar crea una nueva planta, con estas caracter&iacute;sticas:</p> 
+<table> 
+ <thead> 
+  <tr> 
+   <th>Planta</th> 
+   <th>Situaci&oacute;n al ser sembrada</th> 
+  </tr> 
+ </thead> 
+ <tbody> 
+  <tr> 
+   <td><strong>Ma&iacute;z</strong></td> 
+   <td>Es una planta beb&eacute;.</td> 
+  </tr> 
+  <tr> 
+   <td><strong>Trigo</strong></td> 
+   <td>Est&aacute; en etapa de evoluci&oacute;n 0.</td> 
+  </tr> 
+  <tr> 
+   <td><strong>Tomaco</strong></td> 
+   <td>Es una planta hecha y derecha.</td> 
+  </tr> 
+ </tbody> 
+</table> 
+<p>Cada vez que se siembra una planta, Toni la agrega a una colecci&oacute;n de <code>plantasSembradas</code>.</p> 
+<h3> <a id="regar" class="anchor" href="#regar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Regar</h3> 
+<p>Una vez sembrado un cultivo, para que crezca debe ser regado.</p> 
+<p>Agregar a Toni un m&eacute;todo <code>regarLasPlantas()</code> que riegue cada una de las plantas que hay sembradas. Cada planta reacciona diferente cuando es regada:</p> 
+<table> 
+ <thead> 
+  <tr> 
+   <th>Planta</th> 
+   <th>Efecto al ser regada</th> 
+  </tr> 
+ </thead> 
+ <tbody> 
+  <tr> 
+   <td><strong>Ma&iacute;z</strong></td> 
+   <td>Si es beb&eacute;, pasa a adulta. Si ya es adulta, no pasa nada.</td> 
+  </tr> 
+  <tr> 
+   <td><strong>Trigo</strong></td> 
+   <td>Pasa a la etapa de evoluci&oacute;n siguiente: de 0 a 1, de 1 a 2, de 2 a 3, de 3 vuelve a 0.</td> 
+  </tr> 
+  <tr> 
+   <td><strong>Tomaco</strong></td> 
+   <td>Ninguno.</td> 
+  </tr> 
+ </tbody> 
+</table> 
+<h3> <a id="cosechar" class="anchor" href="#cosechar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cosechar</h3> 
+<p>Una planta, puede o no estar lista para la cosecha. El <em>ma&iacute;z</em> est&aacute; listo para la cosecha si es adulto, el <em>trigo</em> si est&aacute; en nivel de evoluci&oacute;n 2 o m&aacute;s, el <em>tomaco</em> siempre.</p> 
+<p>Si la planta est&aacute; lista para la cosecha, se la cosecha, para luego poder venderla. Toni debe recordar qu&eacute; plantas tiene para vender. El acto de cosechar una planta implica que ya no est&aacute; sembrada (y por lo tanto debe reflejarse en la colecci&oacute;n).</p> 
+<p>Agregar a Toni los siguientes m&eacute;todos:</p> 
+<ul> 
+ <li> <code>plantasListasParaCosechar()</code>: el conjunto de las plantas sembradas que ya se pueden cosechar;</li> 
+ <li> <code>cosecharTodo()</code>: que cosecha <em>solamente</em> las plantas que sembr&oacute; y que ya est&aacute;n listas. Conviene ac&aacute; hacer un m&eacute;todo que resuelva la cosecha para una planta y luego utilizarlo para desarrollar <code>cosecharTodo()</code>;</li> 
+</ul> 
+<h3> <a id="venta" class="anchor" href="#venta" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Venta</h3> 
+<p>Implementar un m&eacute;todo <code>venderCosecha()</code> que vende todas las plantas que ya fueron previamente cosechadas. Al hacerlo, obtiene el oro por cada planta que tiene, de acuerdo a esta especificaci&oacute;n:</p> 
+<ul> 
+ <li> <strong>Ma&iacute;z</strong>: 150 monedas por planta.</li> 
+ <li> <strong>Trigo</strong>: 100 monedas si est&aacute; en etapa 2, 200 si est&aacute; en etapa 3.</li> 
+ <li> <strong>Tomaco</strong>: 80 monedas por planta.</li> 
+</ul> 
+<p>Toni debe acumular el oro y recordar cu&aacute;nto oro obtuvo en total. De nuevo, la recomendaci&oacute;n es hacer primero un m&eacute;todo que venda <strong>una</strong> planta y luego hacer el que vende todas.</p> 
+<p><strong>Atenti</strong><br /> Una vez que vende lo que tiene para vender, obviamente, deja de tenerlo.</p> 
+<h3> <a id="consultas-a-toni" class="anchor" href="#consultas-a-toni" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Consultas a Toni</h3> 
+<p>,Queremos agregar las siguientes consultas a Toni:</p> 
+<ul> 
+ <li> <code>paraCuantosDiasLeAlcanza():</code> asumiendo que tiene un gasto de 200 monedas por d&iacute;a, indica para cu&aacute;ntos d&iacute;as le alcanza el dinero. Considerar para esta cuenta el dinero acumulado <strong>m&aacute;s</strong> lo que podr&iacute;a sacar si vende su cosecha actual;</li> 
+ <li> <code>cuantoHayParaCeliacos():</code> indica cu&aacute;ntas plantas de las sembradas podr&iacute;an ser consumidas por personas con celiaqu&iacute;a, las cuales solo pueden comer alimentos sin gluten (el trigo tiene gluten, el tomaco y el ma&iacute;z no). Considerar solamente las plantas que est&eacute;n listas para cosechar;</li> 
+ <li> <code>convieneRegar():</code> indica si alguna de las plantas sembradas a&uacute;n no est&aacute; lista para la cosecha - porque en ese caso convendr&iacute;a regar para acelerar el proceso.</li> 
+</ul> 
+<h2> <a id="etapa-2---game" class="anchor" href="#etapa-2---game" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Etapa 2 - Game</h2> 
 <h3> <a id="caminar-y-sembrar" class="anchor" href="#caminar-y-sembrar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Caminar y sembrar</h3> 
 <p>Configurar las siguientes teclas para controlar a Toni:</p> 
 <table> 
@@ -675,7 +757,7 @@ function setDocumentScrollTop(ypos)
 </table> 
 <p>Por ahora, vamos a evitar sembrar dos plantas en la misma celda, porque eso va a traer problemas a futuro. M&aacute;s adelante vamos a agregar una validaci&oacute;n para que Toni tire error. Es importante que Toni recuerde las plantas que sembr&oacute;, lo vamos a necesitar para regar.</p> 
 <p>Al ser sembradas, las plantas aparecen en su estado inicial, seg&uacute;n ya vimos en la etapa 1.</p> 
-<h3> <a id="regar" class="anchor" href="#regar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Regar</h3> 
+<h3> <a id="regar-1" class="anchor" href="#regar-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Regar</h3> 
 <p>Vamos a contemplar dos formas de regar:</p> 
 <table> 
  <thead> 
@@ -717,7 +799,7 @@ function setDocumentScrollTop(ypos)
 </table> 
 <p>Como se ve, lo que devuelve es una lista y lo que necesitamos es una sola planta, para poder regarla. Les queda a ustedes pensar c&oacute;mo resolver eso.</p> 
 <p>El efecto de las plantas al ser regadas es el mismo de antes. Obviamente, tiene que actualizarse la imagen cada vez que se riega, en la carpeta <code>assets</code> ya tienen todo lo necesario.</p> 
-<h3> <a id="cosechar" class="anchor" href="#cosechar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cosechar</h3> 
+<h3> <a id="cosechar-1" class="anchor" href="#cosechar-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cosechar</h3> 
 <p>Nuevamente, vamos a contemplar dos formas de cosechar:</p> 
 <table> 
  <thead> 
@@ -763,8 +845,24 @@ function setDocumentScrollTop(ypos)
 <pre><code>&gt;&gt;&gt; &quot;Me quedan &quot; + 3 + &quot; plantas&quot;
 &quot;Me quedan 3 plantas&quot;
 </code></pre> 
-<h2> <a id="etapa-2---la-pachamama" class="anchor" href="#etapa-2---la-pachamama" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Etapa 2 - la Pachamama</h2> 
-<p>Vamos a simplificar a&uacute;n m&aacute;s el manejo de la Pachamama, agregando solamente teclas para las acciones de fumigar y llover:</p> 
+<p><strong>Atenti</strong> Hasta ac&aacute; lo obligatorio para aprobar el TP. Lo que sigue debajo son bonus que pueden hacer para sumar nota (y, ponele, divertirse un rato). Los pueden hacer en cualquier orden.</p> 
+<h2> <a id="bonus" class="anchor" href="#bonus" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BONUS</h2> 
+<p>Se incluyen 5 bonus a desarrollar para complementar el desarrollo,</p> 
+<h2> <a id="1---la-pachamama" class="anchor" href="#1---la-pachamama" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1- La Pachamama</h2> 
+<p>Agregar al modelo un objeto que represente a la Pachamama, el cual (obviamente) provocar&aacute; distintos cambios sobre nuestros cultivos.</p> 
+<p>En una sobresimplificaci&oacute;n, vamos a decir que la Pacha tiene un nivel de agradecimiento, que arranca en 10 y que se puede modificar seg&uacute;n las siguientes conductas del ser humano y la naturaleza:</p> 
+<ul> 
+ <li> <code>llover()</code>: aumenta en 5 el nivel de agradecimiento;</li> 
+ <li> <code>fumigar()</code>: lleva el nivel de agradecimiento a 0, sin importar en cu&aacute;nto estaba;</li> 
+</ul> 
+<p>Agregarle tambi&eacute;n un m&eacute;todo <code>estaAgradecida()</code> que nos indica si su nivel de agradecimiento es de 10 o m&aacute;s.</p> 
+<p>Cuando est&aacute; agradecida, cada planta reacciona de distinta manera:</p> 
+<ul> 
+ <li>el <em>ma&iacute;z</em> crece m&aacute;s alto, y su valor en el mercado es de 180 por planta;</li> 
+ <li>el <em>trigo</em> crece m&aacute;s r&aacute;pido, por lo tanto su nivel aumenta en 2 cada vez que se lo riega;</li> 
+ <li>el <em>tomaco</em> se pudre porque es un injerto artificial y por lo tanto ya no estar&aacute; listo para la cosecha</li> 
+</ul> 
+<p>Para el Game hay que agregar las teclas para las acciones de fumigar y llover:</p> 
 <table> 
  <thead> 
   <tr> 
@@ -785,31 +883,7 @@ function setDocumentScrollTop(ypos)
 </table> 
 <p>Se pide adem&aacute;s que cambie la imagen de la Pachamama cuando no est&aacute; agradecida. La imagen para hacerlo no est&aacute; incluida, tienen que armarla ustedes.</p> 
 <p>Deber&iacute;a cambiar tambi&eacute;n la imagen de los tomacos, para reflejar si est&aacute;n podridos o no. Estas im&aacute;genes s&iacute; se incluyen.</p> 
-<h2> <a id="etapa-3---validaciones" class="anchor" href="#etapa-3---validaciones" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Etapa 3 - validaciones</h2> 
-<p>Agregar las siguientes validaciones:</p> 
-<ol> 
- <li>Al sembrar, arrojar error si ya hab&iacute;a otra planta en la celda actual.</li> 
- <li>Al cosechar, arrojar error si la planta de la celda actual no est&aacute; lista.</li> 
- <li>Al cosechar, arrojar error si no hay ninguna planta en la celda actual.</li> 
-</ol> 
-<p>Hasta ac&aacute; lo obligatorio para aprobar el TP. Lo que sigue debajo son bonus que pueden hacer para sumar nota (y, ponele, divertirse un rato). Son independientes uno del otro y pueden hacerse en cualquier orden.</p> 
-<h2> <a id="bonus" class="anchor" href="#bonus" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Bonus</h2> 
-<h3> <a id="mercados" class="anchor" href="#mercados" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Mercados</h3> 
-<p>Incluir dos o tres mercados (imagen <code>mercado.png</code>), eligiendo d&oacute;nde poner cada uno en el tablero. Cada mercado tiene una cantidad de monedas, y una lista con la mercader&iacute;a que posee.</p> 
-<p>Hacer que Toni solamente pueda vender si est&aacute; parado en un mercado, y adem&aacute;s el mercado tiene suficiente cantidad de monedas para pagar lo que Toni tiene para vender. En tal caso, la mercader&iacute;a se agrega al mercado, y se le descuentan las monedas que le da a Toni en pago. Arrojar un error si se intenta vender y Toni no est&aacute; parado sobre un mercado.</p> 
-<h3> <a id="caminar-como-pacman" class="anchor" href="#caminar-como-pacman" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Caminar como Pacman</h3> 
-<p>Hacer los cambios necesarios para que Toni aparezca &quot;del otro lado&quot; cuando al caminar se pasa de los l&iacute;mites del tablero. Por ejemplo, si est&aacute; en el borde derecho y apretamos la flecha derecha, deber&iacute;a aparecer en el borde izquierdo de esa misma fila.</p> 
-<h3> <a id="facilidades-para-sembrar-ma&iacute;z" class="anchor" href="#facilidades-para-sembrar-ma%C3%ADz" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Facilidades para sembrar ma&iacute;z</h3> 
-<p>Programar una tecla para poder sembrar toda una fila (horizontal) y otra para poder sembrar toda una columna (vertical) de ma&iacute;z, ambas en funci&oacute;n de d&oacute;nde Toni est&aacute; parado. Puede servir como base el ejemplo que viene de la fila de ma&iacute;z.</p> 
-<p>Ultra bonus: sembrar solamente en las celdas de la fila/columna que no tengan plantas ni mercados.</p> 
-<h3> <a id="facilidades-para-cosechar" class="anchor" href="#facilidades-para-cosechar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Facilidades para cosechar</h3> 
-<p>Similar al anterior, pero ahora se pide tener una tecla para cosechar toda una fila y otra para cosechar toda una columna.</p> 
-<p>Tener en cuenta que <code>game.colliders</code> solo funciona si Toni est&aacute; en la misma celda que las plantas, lo cual deja dos opciones:</p> 
-<ul> 
- <li>desplazar a Toni a medida que se cosecha y luego volverlo a la posici&oacute;n original;</li> 
- <li>utilizar <code>game.getObjectsIn(position)</code>, que devuelve todos los objetos que est&aacute;n en la posici&oacute;n que va por par&aacute;metro.</li> 
-</ul> 
-<h3> <a id="ofrenda-a-la-pachamama" class="anchor" href="#ofrenda-a-la-pachamama" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ofrenda a la Pachamama</h3> 
+<h2> <a id="2--ofrenda-a-la-pachamama" class="anchor" href="#2--ofrenda-a-la-pachamama" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2- Ofrenda a la Pachamama</h2> 
 <p>Hacer que Toni pueda ofrendarle algo a la Pachamama para que lo ayude con su producci&oacute;n. La ofrenda se hace simplemente caminando hasta donde est&aacute; la Pacha y &quot;chocando&quot; con ella (hay que usar <code>game.whenCollideDo</code> para ver si esto es as&iacute;).</p> 
 <p>Cuando Toni hace una ofrenda, pasa lo siguiente:</p> 
 <ol> 
@@ -817,6 +891,18 @@ function setDocumentScrollTop(ypos)
  <li>Si la Pacha no estaba agradecida, pasa a estarlo.</li> 
  <li>Si ya estaba agradecida, nos regala una lluvia que riega todas las plantas.</li> 
 </ol> 
-<p>Ultra bonus: que despu&eacute;s de la ofrenda, la Pacha cambie de lugar. Podr&iacute;a, por ejemplo, ubicarse en la esquina opuesta a la que est&aacute;. O desplazarse un n&uacute;mero fijo de unidades a la derecha. Elijan ustedes.</p>
+<p>Ultra bonus: que despu&eacute;s de la ofrenda, la Pacha cambie de lugar. Podr&iacute;a, por ejemplo, ubicarse en la esquina opuesta a la que est&aacute;. O desplazarse un n&uacute;mero fijo de unidades a la derecha. Elijan ustedes.</p> 
+<h2> <a id="3---mercados" class="anchor" href="#3---mercados" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3 - Mercados</h2> 
+<p>Incluir dos o tres mercados (imagen <code>mercado.png</code>), eligiendo d&oacute;nde poner cada uno en el tablero. Cada mercado tiene una cantidad de monedas, y una lista con la mercader&iacute;a que posee.</p> 
+<p>Hacer que Toni solamente pueda vender si est&aacute; parado en un mercado, y adem&aacute;s el mercado tiene suficiente cantidad de monedas para pagar lo que Toni tiene para vender. En tal caso, la mercader&iacute;a se agrega al mercado, y se le descuentan las monedas que le da a Toni en pago. Arrojar un error si se intenta vender y Toni no est&aacute; parado sobre un mercado.</p> 
+<h2> <a id="4---caminar-como-pacman" class="anchor" href="#4---caminar-como-pacman" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4 - Caminar como Pacman</h2> 
+<p>Hacer los cambios necesarios para que Toni aparezca &quot;del otro lado&quot; cuando al caminar se pasa de los l&iacute;mites del tablero. Por ejemplo, si est&aacute; en el borde derecho y apretamos la flecha derecha, deber&iacute;a aparecer en el borde izquierdo de esa misma fila.</p> 
+<h2> <a id="5---validaciones" class="anchor" href="#5---validaciones" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5 - Validaciones</h2> 
+<p>Agregar las siguientes validaciones:</p> 
+<ol> 
+ <li>Al sembrar, arrojar error si ya hab&iacute;a otra planta en la celda actual.</li> 
+ <li>Al cosechar, arrojar error si la planta de la celda actual no est&aacute; lista.</li> 
+ <li>Al cosechar, arrojar error si no hay ninguna planta en la celda actual.</li> 
+</ol>
 </body>
 </html>

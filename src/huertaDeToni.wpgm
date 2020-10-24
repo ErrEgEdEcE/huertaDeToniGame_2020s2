@@ -74,18 +74,18 @@ program huertaDeToni {
 	/**Riega la planta en la posición actual de Toni y la hce crecer a su siguiente etapa (Danny) */
 	keyboard.r().onPressDo({ game.colliders(toni).forEach({ p => toni.regarPlanta(p) }) })
 	
-	/**Cochecha todas la plantas listas del tablero que esten listas (Danny) */
+	/**Cochecha todas las plantas listas del tablero que esten listas (Danny) */
 	keyboard.x().onPressDo({ 
 		toni.plantasListasParaCosechar().forEach({ p => game.removeVisual(p) })
 		toni.cosecharTodo()
 	})
 	
-	/**Cosecha las plantas listas en la posiscion actaul de Toni (Danny) */
+	/**Cosecha las plantas listas en la posiscion actaual de Toni (Danny) */
 	keyboard.c().onPressDo({ 
 		game.colliders(toni).forEach({ p => toni.cosechar(p); 
 			if (toni.plantasCosechadas().contains(p)) {
 				game.removeVisual(p)
-			}
+			} 
 		})
 	})
 	

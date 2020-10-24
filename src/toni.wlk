@@ -10,10 +10,7 @@ object toni {
 	var property plantasSembradas = [] 
 	var property plantasCosechadas = []
 	
-	method sembrarPlanta(unaPlanta) { 
-		plantasSembradas.add(unaPlanta) 
-		if (unaPlanta.position() == unaPlanta.position() ) { /**aparece siempre (Caro).*/ 
-			game.say(self, "Ya hay una planta") }  }		 
+	method sembrarPlanta(unaPlanta) { plantasSembradas.add(unaPlanta) }
 			
 	method regarLasPlantas() { plantasSembradas.forEach({ p => p.crecer() }) } 
 	
@@ -23,12 +20,9 @@ object toni {
 	
 	method cosechar(unaPlanta) { 
 		if (self.plantasListasParaCosechar().contains(unaPlanta)) {
-			plantasSembradas.remove(unaPlanta); plantasCosechadas.add(unaPlanta) } 
-		else (unaPlanta.noEstaLista()) return { 
-	    	game.say(self, "No está lista") }
-	    /**Tengo problemas con las posiciones (Caro)
-	    Tiene que dar el mensaje cuando no hay nada. */ 
-	   }
+			plantasSembradas.remove(unaPlanta); plantasCosechadas.add(unaPlanta)
+	    } else {game.say(self, "No está lista") }
+	}
 	
 	method cosecharTodo() { self.plantasListasParaCosechar().forEach({ p => self.cosechar(p) }) }
 	
