@@ -10,7 +10,7 @@ object pachamama {
 		if (agradecimiento >= 10) {
 			return "pachamama-agradecida.png"
 		} else {
-			return "pachamama-noagradecida.jpg"
+			return "pachamama-noagradecida.png"
 		}
 	}
 	
