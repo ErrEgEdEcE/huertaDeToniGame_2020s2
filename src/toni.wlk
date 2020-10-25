@@ -10,7 +10,8 @@ object toni {
 	var property plantasSembradas = [] 
 	var property plantasCosechadas = []
 	
-	method sembrarPlanta(unaPlanta) { plantasSembradas.add(unaPlanta) }
+	
+	method sembrarPlanta(unaPlanta) { plantasSembradas.add(unaPlanta)}
 			
 	method regarLasPlantas() { plantasSembradas.forEach({ p => p.crecer() }) } 
 	
@@ -21,25 +22,27 @@ object toni {
 	method cosechar(unaPlanta) { 
 		if (self.plantasListasParaCosechar().contains(unaPlanta)) {
 			plantasSembradas.remove(unaPlanta); plantasCosechadas.add(unaPlanta)
-	    } else {game.say(self, "No está lista") }
+	    } else self.error("No está lista") 
 	}
+	
 	
 	method cosecharTodo() { self.plantasListasParaCosechar().forEach({ p => self.cosechar(p) }) }
 	
 	method venderPlanta(unaPlanta) { oro += unaPlanta.valor(); plantasCosechadas.remove(unaPlanta) }
 	
-	method venderCosecha() {plantasCosechadas.forEach({ p => self.venderPlanta(p) })
+	method venderCosecha(mercado) {
+		if (self.position() == mercado.position() and mercado.puedeComprar()) {
+			mercado.mercaderia().addAll(self.plantasCosechadas())
+			mercado.monedas(mercado.monedas() - self.valorDeCosecha())
+			plantasCosechadas.forEach({ p => self.venderPlanta(p) })}
+		else self.error("No puedo vender aquí")
+		
 	}
 	
-	/*Traje el método de pachamama hacia Toni, porque es una acción que realiza él, aunque 
-	  tenga efectos sobre la pacha (RO)*/
-	method fumigar() {
-		pachamama.agradecimiento(0)
-		game.say(self, "Ya está todo fumigado")
-	}
+	
 	
 	method hacerOfrenda() {
-		game.removeVisual(self.plantasSembradas().anyOne()) // REVISAR xQ tira error cuando la visual no está 
+		game.removeVisual(self.plantasListasParaCosechar().anyOne()) // REVISAR xQ tira error cuando la visual no está 
 		if (pachamama.estaAgradecida()) {pachamama.llover()}
 		else {pachamama.agradecimiento(10)}
 		game.say(self, "Gracias,Pacha")
@@ -55,4 +58,7 @@ object toni {
 	method cuantoHayParaCeliacos() = self.plantasListasParaCosechar().filter({ p => not p.tieneGluten() }).size()
 	
 	method convieneRegar() = plantasSembradas.any({ p => not p.estaLista() })
+	
+	
+
 }

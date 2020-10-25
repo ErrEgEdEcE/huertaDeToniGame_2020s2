@@ -8,6 +8,7 @@ program huertaDeToni {
 	
 	game.width(15)
 	game.height(15)
+	game.title("Huerta de Toni")
 	
 	// Configuramos una imagen de fondo, que se repite para cada celda del tablero.
 	game.ground("tierra.png")
@@ -43,9 +44,12 @@ program huertaDeToni {
 	// (1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
 	
 	/*Agrego mercados (Ro) */
-	game.addVisual(new Mercado(monedas=150))
-	game.addVisual(new Mercado(monedas=10, position = game.at(9,4)))	
-	game.addVisual(new Mercado(monedas=1000, position = game.origin()))
+	var merc1 = new Mercado(monedas=150)
+	var merc2 = new Mercado(monedas=10, position = game.at(9,4))
+	var merc3 = new Mercado(monedas=1000, position = game.at(1,1))
+	game.addVisual(merc1)
+	game.addVisual(merc2)	
+	game.addVisual(merc3)
 	/**controles */ 
 	
 	/**Agraga un maiz al presionar "M" en la posición actual de Toni 
@@ -95,7 +99,7 @@ program huertaDeToni {
 	})
 	
 	/**Vende todas las plantas cosechadas hasta el momento (Danny) HAY QUE MODIFICAR  */
-	keyboard.v().onPressDo({ toni.venderCosecha() })
+	keyboard.v().onPressDo({mercado => toni.venderCosecha(mercado)})
 	
 	/**Devuelve la cantidad de oro de toni y cuantas plantas le queda para vender (Danny) */
 	keyboard.space().onPressDo({ 
@@ -105,7 +109,7 @@ program huertaDeToni {
 	
 	/** Al presionar F, muestra el mensaje que está fumigado. (Caro) */
 	keyboard.f().onPressDo({ 
-		toni.fumigar()
+		pachamama.fumigar()
 		game.say(toni, "Está fumigado")
 	})
 	
@@ -115,7 +119,7 @@ program huertaDeToni {
 	})
 	
 	/*Al chocar con la pacha, Toni hace una ofrenda (Ro) */
-	game.whenCollideDo(pachamama, {toni.hacerOfrenda()})
+	game.whenCollideDo(pachamama, {t => toni.hacerOfrenda()})
 		
 	
 	

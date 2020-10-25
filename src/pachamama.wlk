@@ -22,6 +22,9 @@ object pachamama {
 		agradecimiento += 5
 		toni.regarLasPlantas()
 	}
+	method fumigar() {
+		self.agradecimiento(0)
+	}
 	
 	method estaAgradecida() {
 		return self.agradecimiento() >= 10}
@@ -29,6 +32,6 @@ object pachamama {
 	method cambiarDePosicion() {
 		const x = 0.randomUpTo(game.width()).truncate(0)
 		const y = 0.randomUpTo(game.height()).truncate(0)
-		position = game.at(x,y)
+		self.position(game.at(x,y))
 	}
 }
