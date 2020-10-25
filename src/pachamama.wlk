@@ -23,6 +23,11 @@ object pachamama {
 		toni.regarLasPlantas()
 	}
 	
+	method fumigar() {
+		self.agradecimiento(0)
+		game.say(self, "Ya está todo fumigado")
+	}
+	
 	method estaAgradecida() {
 		return self.agradecimiento() >= 10}
 	

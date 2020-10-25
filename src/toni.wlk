@@ -21,29 +21,36 @@ object toni {
 	method cosechar(unaPlanta) { 
 		if (self.plantasListasParaCosechar().contains(unaPlanta)) {
 			plantasSembradas.remove(unaPlanta); plantasCosechadas.add(unaPlanta)
-	    } else {game.say(self, "No está lista") }
+	    }
 	}
 	
 	method cosecharTodo() { self.plantasListasParaCosechar().forEach({ p => self.cosechar(p) }) }
 	
-	method venderPlanta(unaPlanta) { oro += unaPlanta.valor(); plantasCosechadas.remove(unaPlanta) }
+	method venderPlanta(unaPlanta) { oro += unaPlanta.valor(); plantasCosechadas.remove(unaPlanta)}
 	
 	method venderCosecha() {plantasCosechadas.forEach({ p => self.venderPlanta(p) })
 	}
 	
-	/*Traje el método de pachamama hacia Toni, porque es una acción que realiza él, aunque 
-	  tenga efectos sobre la pacha (RO)*/
-	method fumigar() {
-		pachamama.agradecimiento(0)
-		game.say(self, "Ya está todo fumigado")
-	}
-	
-	method hacerOfrenda() {
+/** 	method hacerOfrenda() {
 		game.removeVisual(self.plantasSembradas().anyOne()) // REVISAR xQ tira error cuando la visual no está 
 		if (pachamama.estaAgradecida()) {pachamama.llover()}
 		else {pachamama.agradecimiento(10)}
 		game.say(self, "Gracias,Pacha")
 		pachamama.cambiarDePosicion()
+	} */
+	
+	
+	/** Reescribí el codigo de manera que no haga nada ninuna ofrenda cuando no tiene 
+      * con que. (Danny) */
+	method hacerOfrenda() {
+		const ofrenda = plantasSembradas.anyOne()
+		
+		pachamama.agradecimiento(10.max(pachamama.agradecimiento()))
+		game.removeVisual(ofrenda)
+		plantasSembradas.remove(ofrenda)
+		if (pachamama.estaAgradecida()) {
+			pachamama.llover()
+		}
 	}
 		
 	
