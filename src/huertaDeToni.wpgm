@@ -129,7 +129,7 @@ program huertaDeToni {
 		pachamama.llover()
 	})
 	
-	/*Al chocar con la pacha, Toni hace una ofrenda (Ro) */
+	/*Al chocar con la pacha, Toni hace una ofrenda (Ro)    */
 	game.whenCollideDo(pachamama, { obj => 
 		if (not toni.plantasSembradas().isEmpty()) {
 			obj.hacerOfrenda()
