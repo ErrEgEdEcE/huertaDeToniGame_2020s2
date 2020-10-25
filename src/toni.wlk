@@ -1,7 +1,7 @@
 import wollok.game.*
 import plantas.*
 import pachamama.*
-
+import mercados.*
 object toni {
 	const property image = "toni.png"
 	var property position = game.at(3, 3)
@@ -28,9 +28,24 @@ object toni {
 	
 	method venderPlanta(unaPlanta) { oro += unaPlanta.valor(); plantasCosechadas.remove(unaPlanta) }
 	
-	method venderCosecha() { 
-		plantasCosechadas.forEach({ p => self.venderPlanta(p) })
+	method venderCosecha() {plantasCosechadas.forEach({ p => self.venderPlanta(p) })
 	}
+	
+	/*Traje el método de pachamama hacia Toni, porque es una acción que realiza él, aunque 
+	  tenga efectos sobre la pacha (RO)*/
+	method fumigar() {
+		pachamama.agradecimiento(0)
+		game.say(self, "Ya está todo fumigado")
+	}
+	
+	method hacerOfrenda() {
+		game.removeVisual(self.plantasSembradas().anyOne()) // REVISAR xQ tira error cuando la visual no está 
+		if (pachamama.estaAgradecida()) {pachamama.llover()}
+		else {pachamama.agradecimiento(10)}
+		game.say(self, "Gracias,Pacha")
+		pachamama.cambiarDePosicion()
+	}
+		
 	
 	/**Estos son metodos que faltaban en la etapa 1 (Danny) */
 	method valorDeCosecha() = plantasCosechadas.sum({p => p.valor()})

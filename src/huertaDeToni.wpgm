@@ -2,6 +2,7 @@ import wollok.game.*
 import toni.*
 import plantas.*
 import pachamama.*
+import mercados.*
 
 program huertaDeToni {
 	
@@ -24,9 +25,10 @@ program huertaDeToni {
 	
 	/*
 	 * Acá usamos addVisualIn en vez de addVisual, y por esto 
-	 * no es necesario que la pachamama conozca su position.
+	 * no es necesario que la pachamama conozca su position. LO MODIFIQUE PARA AGREGAR
+	 * EL method CAMBIAR DE POSICION (RO)
 	 */
-	game.addVisualIn(pachamama, game.at(0, 13));
+	game.addVisual(pachamama);
 	
 	/* 
 	 * Agregamos una fila de maices. Ojo al regar, que Toni no va a conocer
@@ -39,31 +41,34 @@ program huertaDeToni {
 	 * un rango (1..13), que equivale a la lista [1, 2, 3, ..., 13].
 	 */
 	// (1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
-		
 	
+	/*Agrego mercados (Ro) */
+	game.addVisual(new Mercado(monedas=150))
+	game.addVisual(new Mercado(monedas=10, position = game.at(9,4)))	
+	game.addVisual(new Mercado(monedas=1000, position = game.origin()))
 	/**controles */ 
 	
 	/**Agraga un maiz al presionar "M" en la posición actual de Toni 
-       (Danny)*/
+       (Danny) Saque el right porque si no la siembra a la derecha de la posicion actual (Ro)*/
 	keyboard.m().onPressDo ({
-		var maiz = new Maiz(position = toni.position().right(1))
+		var maiz = new Maiz(position = toni.position())
 		toni.sembrarPlanta(maiz)
 		game.addVisual(maiz)
 	})
 	
-	/**Agraga un trigo al presionar "M" en la posición actual de Toni 
-       (Danny)*/
+	/**Agraga un trigo al presionar "T" en la posición actual de Toni 
+       (Danny) Saqué el right(ro)*/
 	keyboard.t().onPressDo ({
-		var trigo = new Trigo(position = toni.position().right(1))
+		var trigo = new Trigo(position = toni.position())
 		toni.sembrarPlanta(trigo)
 		game.addVisual(trigo)
 
 	})
 	
 	/**Agraga un tomaco al presionar "O" en la posición actual de Toni 
-       (Danny)*/
+       (Danny). Saque el right (Ro)*/
 	keyboard.o().onPressDo ({
-		var tomaco = new Tomaco(position = toni.position().right(1))
+		var tomaco = new Tomaco(position = toni.position())
 		toni.sembrarPlanta(tomaco)
 		game.addVisual(tomaco)
 	})
@@ -89,20 +94,30 @@ program huertaDeToni {
 		})
 	})
 	
-	/**Vende todas las plantas cosechadas hasta el momento (Danny) */
+	/**Vende todas las plantas cosechadas hasta el momento (Danny) HAY QUE MODIFICAR  */
 	keyboard.v().onPressDo({ toni.venderCosecha() })
 	
 	/**Devuelve la cantidad de oro de toni y cuantas plantas le queda para vender (Danny) */
 	keyboard.space().onPressDo({ 
-		game.say(toni, "Tengo " + toni.oro() + " monedas" + 
-		" y me qudan " + toni.plantasCosechadas().size() + " plantas para vender" )
+		game.say(toni, "Tengo" + toni.oro() + "monedas" + 
+		"y me quedan" + toni.plantasCosechadas().size() + "plantas para vender" )
 	})
 	
 	/** Al presionar F, muestra el mensaje que está fumigado. (Caro) */
-	keyboard.f().onPressDo({ pachamama.fumigar() })
+	keyboard.f().onPressDo({ 
+		toni.fumigar()
+		game.say(toni, "Está fumigado")
+	})
 	
 	/** Al presionar L, logrará que llueva y las plantas se rieguen (Caro) */
-	keyboard.l().onPressDo({ pachamama.llover() })
+	keyboard.l().onPressDo({
+		pachamama.llover()
+	})
+	
+	/*Al chocar con la pacha, Toni hace una ofrenda (Ro) */
+	game.whenCollideDo(pachamama, {toni.hacerOfrenda()})
+		
+	
 	
 	game.start()
 }
