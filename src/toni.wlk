@@ -10,6 +10,25 @@ object toni {
 	var property plantasSembradas = [] 
 	var property plantasCosechadas = []
 	
+	
+	/** Métodos de movimietos agragados para poder hacer el "Caminar como pacman" (Danny) */
+	method moveteDerecha(){
+		self.position(self.position().right(1))
+	}
+	
+	method moveteIzquierda(){
+		self.position(self.position().left(1))
+	}
+	
+	method moveteArriba(){
+		self.position(self.position().up(1))
+	}
+	
+	method moveteAbajo(){
+		self.position(self.position().down(1))
+	}
+	
+	
 	method sembrarPlanta(unaPlanta) { plantasSembradas.add(unaPlanta) }
 			
 	method regarLasPlantas() { plantasSembradas.forEach({ p => p.crecer() }) } 
@@ -28,7 +47,11 @@ object toni {
 	
 	method venderPlanta(unaPlanta) { oro += unaPlanta.valor(); plantasCosechadas.remove(unaPlanta)}
 	
-	method venderCosecha() {plantasCosechadas.forEach({ p => self.venderPlanta(p) })
+	method venderCosecha() {
+		if (game.colliders(self).any({ obj => obj.puedeComprar() })) {
+			game.uniqueCollider(self).comprarCosecha()
+			plantasCosechadas.forEach({ p => self.venderPlanta(p) })
+		}
 	}
 	
 /** 	method hacerOfrenda() {

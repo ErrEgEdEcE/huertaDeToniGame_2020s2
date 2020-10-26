@@ -13,15 +13,9 @@ program huertaDeToni {
 	game.ground("tierra.png")
 	
 	// Agregamos al amigo Toni.
-	/** (Danny)
-      *Cambié "addVisual" por "addVisualCharacter"
-      *este método agrega a "toni" y le da por defecto los
-      *movimietos con las flechas, sin necesidad de tener que
-      *programarlos.
-      */
-  //game.addVisual(toni) 
-	game.addVisualCharacter(toni) 
 	
+	/** Cambio por "addVisual" para poder hacer "mover como pacman" */
+    game.addVisual(toni) 
 	
 	/*
 	 * Acá usamos addVisualIn en vez de addVisual, y por esto 
@@ -43,10 +37,37 @@ program huertaDeToni {
 	// (1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
 	
 	/*Agrego mercados (Ro) */
-	game.addVisual(new Mercado(monedas=150))
+	game.addVisual(new Mercado(monedas=360))
 	game.addVisual(new Mercado(monedas=10, position = game.at(9,4)))	
 	game.addVisual(new Mercado(monedas=1000, position = game.origin()))
+	
+	
 	/**controles */ 
+	
+	keyboard.b().onPressDo({ game.say(toni, "tengo " + toni.valorDeCosecha()) })
+	
+	/**Controles para los movimietos, si llega al borde del tablero,
+      *toni aparecerá al lado contrario de dicho borde (Danny) */
+	keyboard.up().onPressDo ({
+		if (toni.position().y() == game.height() - 1) {
+			toni.position(toni.position().down(game.height() - 1))
+		} else { toni.moveteArriba() }
+	})	
+	keyboard.down().onPressDo ({
+		if (toni.position().y() == 0) {
+			toni.position(toni.position().up(game.height() - 1))
+		} else { toni.moveteAbajo() }	
+	})	
+	keyboard.left().onPressDo ({
+		if (toni.position().x() == 0) {
+			toni.position(toni.position().right(game.width() - 1))
+		} else { toni.moveteIzquierda() }	
+	})	
+	keyboard.right().onPressDo ({
+		if (toni.position().x() == game.width() - 1) {
+			toni.position(toni.position().left(game.width() - 1))
+		} else { toni.moveteDerecha() }
+	})
 	
 	/**Agraga un maiz al presionar "M" en la posición actual de Toni 
        (Danny) Saque el right porque si no la siembra a la derecha de la posicion actual (Ro)*/
@@ -111,11 +132,14 @@ program huertaDeToni {
 	
 	/**Vende todas las plantas cosechadas hasta el momento (Danny) HAY QUE MODIFICAR  */
 	keyboard.v().onPressDo({ toni.venderCosecha() })
+		
+
+	
 	
 	/**Devuelve la cantidad de oro de toni y cuantas plantas le queda para vender (Danny) */
 	keyboard.space().onPressDo({ 
-		game.say(toni, "Tengo" + toni.oro() + "monedas" + 
-		"y me quedan" + toni.plantasCosechadas().size() + "plantas para vender" )
+		game.say(toni, "Tengo " + toni.oro() + " monedas" + 
+		" y me quedan " + toni.plantasCosechadas().size() + " plantas para vender" )
 	})
 	
 	/** Al presionar F, muestra el mensaje que está fumigado. (Caro) */
@@ -129,16 +153,14 @@ program huertaDeToni {
 		pachamama.llover()
 	})
 	
-	/*Al chocar con la pacha, Toni hace una ofrenda (Ro)    */
-	game.whenCollideDo(pachamama, { obj => 
-		if (not toni.plantasSembradas().isEmpty()) {
-			obj.hacerOfrenda()
+	/*Al chocar con la pacha, Toni hace una ofrenda (Ro) */
+	game.whenCollideDo(toni, { obj => 
+		if (not toni.plantasSembradas().isEmpty() && obj.equals(pachamama)) {
+			toni.hacerOfrenda()
 		    game.say(toni, "Gracias,Pacha")
 		    pachamama.cambiarDePosicion()
 		}
 	})
-		
-	
 	
 	game.start()
 }

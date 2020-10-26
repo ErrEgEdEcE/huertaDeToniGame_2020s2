@@ -10,5 +10,11 @@ class Mercado {
 	// Indica si las monedas de ese mercado alcanzan para comprar la cosecha
 	method puedeComprar() {
 		return self.monedas() >= toni.valorDeCosecha()
-	}	
+	}
+	
+	method comprarCosecha() {
+		if (self.puedeComprar() && game.uniqueCollider(self).image() == "mercado.png") {
+			monedas -= toni.valorDeCosecha()
+		}
+	}
 }
