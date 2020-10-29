@@ -5,6 +5,7 @@ import wollok.game.*
 object pachamama {
 	var property agradecimiento = 10
 	var property position = game.at(0, 13)
+	const property tipo = "Pachamama"
 	
 	method image() {
 		if (agradecimiento >= 10) {
@@ -13,7 +14,6 @@ object pachamama {
 			return "pachamama-noagradecida.png"
 		}
 	}
-	
 				
 	/** Se supone que si llueve, riega todas las plantas, ¿no? 
 	supuse que no hay que hacerlo todo de nuevo pero como lo hace toni,
@@ -36,6 +36,4 @@ object pachamama {
 		const y = 0.randomUpTo(game.height()).truncate(0)
 		position = game.at(x,y)
 	}
-	
-	method puedeComprar() = false
 }

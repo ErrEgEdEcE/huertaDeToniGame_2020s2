@@ -39,7 +39,7 @@ program huertaDeToni {
 	/*Agrego mercados (Ro) */
 	game.addVisual(new Mercado(monedas=360))
 	game.addVisual(new Mercado(monedas=10, position = game.at(9,4)))	
-	game.addVisual(new Mercado(monedas=1000, position = game.origin()))
+	game.addVisual(new Mercado(monedas=1000, position = game.at(7,5)))
 	
 	
 	/**controles */ 
@@ -75,8 +75,7 @@ program huertaDeToni {
 		if (toni.estaEnCeldaVacia()) {
 			var maiz = new Maiz(position = toni.position())
 		    toni.sembrarPlanta(maiz)
-		    game.addVisual(maiz)
-		} else { game.say(toni, "No puedo sembrar acá") }
+		} else (game.say(toni, "No puedo sembrar acá"))
 		
 	})
 	
@@ -86,8 +85,7 @@ program huertaDeToni {
 		if (toni.estaEnCeldaVacia()) {
 		    var trigo = new Trigo(position = toni.position())
 		    toni.sembrarPlanta(trigo)
-		    game.addVisual(trigo)
-		} else { game.say(toni, "No puedo sembrar acá") }
+		} else (game.say(toni, "No puedo sembrar acá"))
 
 	})
 	
@@ -97,8 +95,7 @@ program huertaDeToni {
 		if (toni.estaEnCeldaVacia()) {
 		    var tomaco = new Tomaco(position = toni.position())
 		    toni.sembrarPlanta(tomaco)
-		    game.addVisual(tomaco)
-		} else { game.say(toni, "No puedo sembrar acá") }
+		} else (game.say(toni, "No puedo sembrar acá"))
 		
 	})
 	
@@ -107,15 +104,14 @@ program huertaDeToni {
 	
 	/**Riega la planta en la posición actual de Toni y la hce crecer a su siguiente etapa (Danny) */
 	keyboard.r().onPressDo({
-		if (toni.hayPlanta()) {
-			toni.regarPlanta(game.colliders(toni).first())
+		if (toni.sobreUnaPlanta()) {
+			toni.regarPlanta(game.uniqueCollider(toni))
 		}
 		
 	})
 	
 	/**Cochecha todas las plantas listas del tablero que esten listas (Danny) */
 	keyboard.x().onPressDo({ 
-		toni.plantasListasParaCosechar().forEach({ p => game.removeVisual(p) })
 		toni.cosecharTodo()
 	})
 	
@@ -123,27 +119,15 @@ program huertaDeToni {
       *está lista para cosechar, toni avisa y no cosecha nada, y si no hay
       *una planta en la celda actaul, avisa que no hay una planta. (Danny) */
 	keyboard.c().onPressDo({ 
-		if (not toni.hayPlanta()) {
-			game.say(toni, "No hay una planta acá")
-		}
-		game.colliders(toni).forEach({ p => toni.cosechar(p); 
-			if (toni.plantasCosechadas().contains(p)) {
-				game.removeVisual(p)
-			} else if (toni.plantasSembradas().contains(p)) { 
-				game.say(toni, "No está lista")
-			}
-		})
-	}) //Revisar
+		if (toni.sobreUnaPlanta()) {
+			toni.cosechar(game.uniqueCollider(toni))
+		} else { 
+			game.say(toni, "No hay una planta acá") 
+		}	
+	})
 	
 	/**Vende todas las plantas cosechadas hasta el momento (Danny) HAY QUE MODIFICAR  */
-	keyboard.v().onPressDo({ 
-		toni.venderCosecha()
-		if (toni.estaEnCeldaVacia() || toni.hayPlanta()) {
-			game.say(toni, "No estoy en un mercado")
-		} 
-	})
-		
-
+	keyboard.v().onPressDo({ toni.venderCosecha() })
 	
 	
 	/**Devuelve la cantidad de oro de toni y cuantas plantas le queda para vender (Danny) */
@@ -159,13 +143,11 @@ program huertaDeToni {
 	})
 	
 	/** Al presionar L, logrará que llueva y las plantas se rieguen (Caro) */
-	keyboard.l().onPressDo({
-		pachamama.llover()
-	})
+	keyboard.l().onPressDo({ pachamama.llover() })
 	
 	/*Al chocar con la pacha, Toni hace una ofrenda (Ro) */
 	game.whenCollideDo(toni, { obj => 
-		if (not toni.plantasSembradas().isEmpty() && obj.equals(pachamama)) {
+		if (toni.agunaPlantaLista() && obj.equals(pachamama)) {
 			toni.hacerOfrenda()
 		    game.say(toni, "Gracias,Pacha")
 		    pachamama.cambiarDePosicion()

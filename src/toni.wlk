@@ -2,6 +2,7 @@ import wollok.game.*
 import plantas.*
 import pachamama.*
 import mercados.*
+
 object toni {
 	const property image = "toni.png"
 	var property position = game.at(3, 3)
@@ -29,7 +30,12 @@ object toni {
 	}
 	
 	
-	method sembrarPlanta(unaPlanta) { plantasSembradas.add(unaPlanta) }
+	method sembrarPlanta(unaPlanta) { 
+		if (not self.sobreUnaPlanta()) {
+			plantasSembradas.add(unaPlanta)
+			game.addVisual(unaPlanta)
+		} 
+	}
 			
 	method regarLasPlantas() { plantasSembradas.forEach({ p => p.crecer() }) } 
 	
@@ -38,9 +44,11 @@ object toni {
 	method plantasListasParaCosechar() = plantasSembradas.filter({ p => p.estaLista() })
 	
 	method cosechar(unaPlanta) { 
-		if (self.plantasListasParaCosechar().contains(unaPlanta)) {
-			plantasSembradas.remove(unaPlanta); plantasCosechadas.add(unaPlanta)
-	    }
+		if (unaPlanta.estaLista()) {
+			plantasSembradas.remove(unaPlanta)
+			plantasCosechadas.add(unaPlanta)
+			game.removeVisual(unaPlanta)
+	    } else { game.say(self, "No está lista") }
 	}
 	
 	method cosecharTodo() { self.plantasListasParaCosechar().forEach({ p => self.cosechar(p) }) }
@@ -48,20 +56,10 @@ object toni {
 	method venderPlanta(unaPlanta) { oro += unaPlanta.valor(); plantasCosechadas.remove(unaPlanta)}
 	
 	method venderCosecha() {
-		if (game.colliders(self).any({ obj => obj.puedeComprar() })) {
+		if (self.estaEnUnMercado()) {
 			game.uniqueCollider(self).comprarCosecha()
-			plantasCosechadas.forEach({ p => self.venderPlanta(p) })
-		}
+		} else { game.say(self, "No estoy en un mercado") }
 	}
-	
-/** 	method hacerOfrenda() {
-		game.removeVisual(self.plantasSembradas().anyOne()) // REVISAR xQ tira error cuando la visual no está 
-		if (pachamama.estaAgradecida()) {pachamama.llover()}
-		else {pachamama.agradecimiento(10)}
-		game.say(self, "Gracias,Pacha")
-		pachamama.cambiarDePosicion()
-	} */
-	
 	
 	/** Reescribí el codigo de manera que no haga nada ninuna ofrenda cuando no tiene 
       * con que. (Danny) */
@@ -86,9 +84,13 @@ object toni {
 	
 	method convieneRegar() = plantasSembradas.any({ p => not p.estaLista() })
 	
-	method hayPlanta() = game.colliders(self).size() > 0 && plantasSembradas.contains(game.colliders(self).first())
+	method sobreUnaPlanta() = game.colliders(self).any({ obj => obj.tipo() == "Planta" })
 	
 	method estaEnCeldaVacia() = game.colliders(self).isEmpty()
+	
+	method estaEnUnMercado() = game.colliders(self).any({ obj => obj.tipo() == "Mercado" }) 
+	
+	method agunaPlantaLista() = plantasSembradas.any({ p => p.estaLista() })
 }
 
 

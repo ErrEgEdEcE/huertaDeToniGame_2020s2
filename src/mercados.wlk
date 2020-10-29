@@ -6,6 +6,7 @@ class Mercado {
 	var property position = game.at(5,7)
 	var property mercaderia = []
 	const property image = "mercado.png"
+	const property tipo = "Mercado"
 	
 	// Indica si las monedas de ese mercado alcanzan para comprar la cosecha
 	method puedeComprar() {
@@ -13,9 +14,10 @@ class Mercado {
 	}
 	
 	method comprarCosecha() {
-		if (self.puedeComprar() && game.uniqueCollider(self).equals(toni)) {
+		if (self.puedeComprar()) {
 			monedas -= toni.valorDeCosecha()
 			mercaderia.addAll(toni.plantasCosechadas())
-		} else { game.say(self, "No tengo suficientes monedas") }
+			toni.plantasCosechadas().forEach({ p => toni.venderPlanta(p) })
+		} else { game.say(self, "Monedas insuficientes, " + " tengo solo " + monedas + " monedas") }
 	}
 }
