@@ -20,12 +20,12 @@ object pachamama {
 	no creo que esté bien (Caro) */
 	method llover() {
 		agradecimiento += 5
-		toni.regarLasPlantas()
+		toni.regarLasPlantas() //Suponemos que cuando llueve riega las plantas
 	}
 	
 	method fumigar() {
 		self.agradecimiento(0)
-		game.say(self, "Ya está todo fumigado")
+		game.say(toni, "Ya está todo fumigado")
 	}
 	
 	method estaAgradecida() {
@@ -36,4 +36,6 @@ object pachamama {
 		const y = 0.randomUpTo(game.height()).truncate(0)
 		position = game.at(x,y)
 	}
+	
+	method puedeComprar() = false
 }

@@ -18,6 +18,7 @@ class Maiz {
 		
 		return 150 + plusAgradecimiento
 	}
+	method puedeComprar() = false
 }
 
 class Trigo {
@@ -26,8 +27,8 @@ class Trigo {
 	var indiceEstado = 0
 		
 	method valor() {
-		return if (indiceEstado == 2) 100
-		else  if (indiceEstado == 3) 200
+		return if (self.etapaEvolucion() == 2) 100
+		else  if (self.etapaEvolucion() == 3) 200
 		else 0 
 	} /*Lo cambié de const property a method, porque el valor es variable, dependiendo del 
 	 * índice de Estado y de si la pacha esta agradecida. No hace falta un setter (rocío)*/ 
@@ -39,11 +40,17 @@ class Trigo {
 		indiceEstado += 1 + plusAgradecimiento
 	}
 	
-	method image() = estados.get(indiceEstado % 4)
+	method image() = estados.get(self.etapaEvolucion())
 	
-	method estaLista() = indiceEstado >= 2
+	method estaLista() = self.etapaEvolucion() >= 2
 	method tieneGluten() = true
-}
+	
+	method etapaEvolucion() = indiceEstado % 4
+	
+	method puedeComprar() = false
+} //Hacer metodo de etapa de evolucion
+
+
 
 
 
@@ -58,6 +65,17 @@ class Tomaco {
 	
 	method estaLista() {
 		return self.image() == "tomaco_ok.png"
-	} //Modifiqué esto porque si está podrido, no está listo para la cosecha (Ro)
+	}
+	
 	method tieneGluten() = false
+	
+	method puedeComprar() = false
 }
+
+
+
+
+
+
+
+

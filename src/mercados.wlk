@@ -13,8 +13,9 @@ class Mercado {
 	}
 	
 	method comprarCosecha() {
-		if (self.puedeComprar() && game.uniqueCollider(self).image() == "mercado.png") {
+		if (self.puedeComprar() && game.uniqueCollider(self).equals(toni)) {
 			monedas -= toni.valorDeCosecha()
-		}
+			mercaderia.addAll(toni.plantasCosechadas())
+		} else { game.say(self, "No tengo suficientes monedas") }
 	}
 }

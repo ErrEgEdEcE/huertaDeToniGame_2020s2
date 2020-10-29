@@ -85,4 +85,13 @@ object toni {
 	method cuantoHayParaCeliacos() = self.plantasListasParaCosechar().filter({ p => not p.tieneGluten() }).size()
 	
 	method convieneRegar() = plantasSembradas.any({ p => not p.estaLista() })
+	
+	method hayPlanta() = game.colliders(self).size() > 0 && plantasSembradas.contains(game.colliders(self).first())
+	
+	method estaEnCeldaVacia() = game.colliders(self).isEmpty()
 }
+
+
+
+
+
