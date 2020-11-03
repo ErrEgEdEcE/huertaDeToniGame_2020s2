@@ -8,7 +8,7 @@ program huertaDeToni {
 	
 	game.width(15)
 	game.height(15)
-	
+	game.title("La Huerta de Toni")
 	// Configuramos una imagen de fondo, que se repite para cada celda del tablero.
 	game.ground("tierra.png")
 	
@@ -42,9 +42,8 @@ program huertaDeToni {
 	game.addVisual(new Mercado(monedas=1000, position = game.at(7,5)))
 	
 	
-	/**controles */ 
 	
-	keyboard.b().onPressDo({ game.say(toni, "tengo " + toni.valorDeCosecha()) })
+	
 	
 	/**Controles para los movimietos, si llega al borde del tablero,
       *toni aparecerá al lado contrario de dicho borde (Danny) */
