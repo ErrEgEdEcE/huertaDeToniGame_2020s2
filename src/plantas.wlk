@@ -2,7 +2,7 @@ import wollok.game.*
 import pachamama.*
 
 class Planta {
-	var property position
+	var property position = game.at(0, 0)
 	const property tipo = "Planta"
 	
 	method image()

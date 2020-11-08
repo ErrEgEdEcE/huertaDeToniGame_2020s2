@@ -7,6 +7,7 @@ object toni {
 	const property image = "toni.png"
 	var property position = game.at(3, 3)
 	var property oro = 0
+	const property tipo = "Granjero"
 	
 	var property plantasSembradas = [] 
 	var property plantasCosechadas = []
@@ -29,6 +30,7 @@ object toni {
 		self.position(self.position().down(1))
 	}
 	
+	method plantasEnLaGranja() = game.allVisuals().filter({ obj => obj.tipo() == "Planta" })
 	
 	method sembrarPlanta(unaPlanta) { 
 		if (not self.sobreUnaPlanta()) {
@@ -37,11 +39,11 @@ object toni {
 		} 
 	}
 			
-	method regarLasPlantas() { plantasSembradas.forEach({ p => p.crecer() }) } 
+	method regarLasPlantas() { self.plantasEnLaGranja().forEach({ p => p.crecer() }) } 
 	
-	method regarPlanta(unaPlanta) { if (plantasSembradas.contains(unaPlanta)) unaPlanta.crecer() }
+	method regarPlanta(unaPlanta) { if (self.plantasEnLaGranja().contains(unaPlanta)) unaPlanta.crecer() }
 	
-	method plantasListasParaCosechar() = plantasSembradas.filter({ p => p.estaLista() })
+	method plantasListasParaCosechar() = self.plantasEnLaGranja().filter({ p => p.estaLista() })
 	
 	method cosechar(unaPlanta) { 
 		if (unaPlanta.estaLista()) {
@@ -64,7 +66,7 @@ object toni {
 	/** Reescribí el codigo de manera que no haga nada ninuna ofrenda cuando no tiene 
       * con que. (Danny) */
 	method hacerOfrenda() {
-		const ofrenda = plantasSembradas.anyOne()
+		const ofrenda = self.plantasEnLaGranja().anyOne()
 		
 		pachamama.agradecimiento(10.max(pachamama.agradecimiento()))
 		game.removeVisual(ofrenda)
@@ -82,7 +84,7 @@ object toni {
 	
 	method cuantoHayParaCeliacos() = self.plantasListasParaCosechar().filter({ p => not p.tieneGluten() }).size()
 	
-	method convieneRegar() = plantasSembradas.any({ p => not p.estaLista() })
+	method convieneRegar() = self.plantasEnLaGranja().any({ p => not p.estaLista() })
 	
 	method sobreUnaPlanta() = game.colliders(self).any({ obj => obj.tipo() == "Planta" })
 	
@@ -90,7 +92,15 @@ object toni {
 	
 	method estaEnUnMercado() = game.colliders(self).any({ obj => obj.tipo() == "Mercado" }) 
 	
-	method agunaPlantaLista() = plantasSembradas.any({ p => p.estaLista() })
+	method agunaPlantaLista() = self.plantasEnLaGranja().any({ p => p.estaLista() })
+	
+	method estaEnBordeNorte() = self.position().y() == game.height() - 1
+	
+	method estaEnBordeSur() = self.position().y() == 0
+	
+	method estaEnBordeEste() = self.position().x() == game.width() - 1
+	
+	method estaEnBordeOeste() = self.position().x() == 0
 }
 
 

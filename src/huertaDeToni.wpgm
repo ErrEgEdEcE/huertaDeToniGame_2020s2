@@ -34,12 +34,12 @@ program huertaDeToni {
 	 * De yapa, mostramos cómo agregar varios objetos de una utilizando
 	 * un rango (1..13), que equivale a la lista [1, 2, 3, ..., 13].
 	 */
-	// (1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
+	(1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
 	
 	/*Agrego mercados (Ro) */
 	game.addVisual(new Mercado(monedas=360))
 	game.addVisual(new Mercado(monedas=10, position = game.at(9,4)))	
-	game.addVisual(new Mercado(monedas=1000, position = game.at(7,5)))
+	game.addVisual(new Mercado(monedas=1000, position = game.at(7,6)))
 	
 	
 	
@@ -48,22 +48,22 @@ program huertaDeToni {
 	/**Controles para los movimietos, si llega al borde del tablero,
       *toni aparecerá al lado contrario de dicho borde (Danny) */
 	keyboard.up().onPressDo ({
-		if (toni.position().y() == game.height() - 1) {
+		if (toni.estaEnBordeNorte()) {
 			toni.position(toni.position().down(game.height() - 1))
 		} else { toni.moveteArriba() }
 	})	
 	keyboard.down().onPressDo ({
-		if (toni.position().y() == 0) {
+		if (toni.estaEnBordeSur()) {
 			toni.position(toni.position().up(game.height() - 1))
 		} else { toni.moveteAbajo() }	
 	})	
 	keyboard.left().onPressDo ({
-		if (toni.position().x() == 0) {
+		if (toni.estaEnBordeOeste()) {
 			toni.position(toni.position().right(game.width() - 1))
 		} else { toni.moveteIzquierda() }	
 	})	
 	keyboard.right().onPressDo ({
-		if (toni.position().x() == game.width() - 1) {
+		if (toni.estaEnBordeEste()) {
 			toni.position(toni.position().left(game.width() - 1))
 		} else { toni.moveteDerecha() }
 	})
