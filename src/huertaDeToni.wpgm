@@ -6,70 +6,65 @@ import mercados.*
 
 program huertaDeToni {
 	
-	game.width(15)
-	game.height(15)
+	/**Tablero del juego */
 	game.title("La Huerta de Toni")
-	// Configuramos una imagen de fondo, que se repite para cada celda del tablero.
+	
+	game.width(15)
+	
+	game.height(15)
+
 	game.ground("tierra.png")
 	
-	// Agregamos al amigo Toni.
+	/*******************************************************************************************/
 	
-	/** Cambio por "addVisual" para poder hacer "mover como pacman" */
+	/**Visuales */
     game.addVisual(toni) 
 	
-	/*
-	 * Acá usamos addVisualIn en vez de addVisual, y por esto 
-	 * no es necesario que la pachamama conozca su position. LO MODIFIQUE PARA AGREGAR
-	 * EL method CAMBIAR DE POSICION (RO)
-	 */
-	game.addVisual(pachamama);
+	game.addVisual(pachamama); (1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
 	
-	/* 
-	 * Agregamos una fila de maices. Ojo al regar, que Toni no va a conocer
-	 * estas plantas.
-	 * 
-	 * En este ejemplo también usamos addVisualIn, por lo tanto
-	 * el Maiz solo define la imagen.
-	 * 
-	 * De yapa, mostramos cómo agregar varios objetos de una utilizando
-	 * un rango (1..13), que equivale a la lista [1, 2, 3, ..., 13].
-	 */
-	(1..13).forEach { x => game.addVisualIn(new Maiz(), game.at(x, 5)) }
-	
-	/*Agrego mercados (Ro) */
+	/**Mercados */
 	game.addVisual(new Mercado(monedas=360))
 	game.addVisual(new Mercado(monedas=10, position = game.at(9,4)))	
 	game.addVisual(new Mercado(monedas=1000, position = game.at(7,6)))
 	
+	/*******************************************************************************************/
 	
+	/**Controles movimieto tipo "Pac man" */
 	
-	
-	
-	/**Controles para los movimietos, si llega al borde del tablero,
-      *toni aparecerá al lado contrario de dicho borde (Danny) */
+	/**Mueve a toni en dirección al norte, al atravesar el borde del tablero, este 
+      *aparecerá en el borde sur */
 	keyboard.up().onPressDo ({
 		if (toni.estaEnBordeNorte()) {
 			toni.position(toni.position().down(game.height() - 1))
 		} else { toni.moveteArriba() }
 	})	
+	/**Mueve a toni en dirección al sur, al atravesar el borde del tablero, este 
+      *aparecerá en el borde norte */
 	keyboard.down().onPressDo ({
 		if (toni.estaEnBordeSur()) {
 			toni.position(toni.position().up(game.height() - 1))
 		} else { toni.moveteAbajo() }	
 	})	
+	/**Mueve a toni en dirección al oeste, al atravesar el borde del tablero, este 
+      *aparecerá en el borde este */
 	keyboard.left().onPressDo ({
 		if (toni.estaEnBordeOeste()) {
 			toni.position(toni.position().right(game.width() - 1))
 		} else { toni.moveteIzquierda() }	
 	})	
+	/**Mueve a toni en dirección al este, al atravesar el borde del tablero, este 
+      *aparecerá en el borde oeste */
 	keyboard.right().onPressDo ({
 		if (toni.estaEnBordeEste()) {
 			toni.position(toni.position().left(game.width() - 1))
 		} else { toni.moveteDerecha() }
 	})
 	
-	/**Agraga un maiz al presionar "M" en la posición actual de Toni 
-       (Danny) Saque el right porque si no la siembra a la derecha de la posicion actual (Ro)*/
+	/*******************************************************************************************/
+	
+	/**Controles de sembrado */
+	
+	/**Agraga un maiz al presionar "M" en la posición actual de Toni */
 	keyboard.m().onPressDo ({
 		if (toni.estaEnCeldaVacia()) {
 			var maiz = new Maiz(position = toni.position())
@@ -77,9 +72,7 @@ program huertaDeToni {
 		} else (game.say(toni, "No puedo sembrar acá"))
 		
 	})
-	
-	/**Agraga un trigo al presionar "T" en la posición actual de Toni 
-       (Danny) Saqué el right(ro)*/
+	/**Agraga un trigo al presionar "T" en la posición actual de Toni */
 	keyboard.t().onPressDo ({
 		if (toni.estaEnCeldaVacia()) {
 		    var trigo = new Trigo(position = toni.position())
@@ -87,9 +80,7 @@ program huertaDeToni {
 		} else (game.say(toni, "No puedo sembrar acá"))
 
 	})
-	
-	/**Agraga un tomaco al presionar "O" en la posición actual de Toni 
-       (Danny). Saque el right (Ro)*/
+	/**Agraga un tomaco al presionar "O" en la posición actual de Toni */
 	keyboard.o().onPressDo ({
 		if (toni.estaEnCeldaVacia()) {
 		    var tomaco = new Tomaco(position = toni.position())
@@ -97,6 +88,10 @@ program huertaDeToni {
 		} else (game.say(toni, "No puedo sembrar acá"))
 		
 	})
+	
+	/*******************************************************************************************/
+	
+	/**Controles de riego */
 	
 	/**Riega todas las plnatas del tablero */
 	keyboard.a().onPressDo({ toni.regarLasPlantas() })
@@ -109,14 +104,18 @@ program huertaDeToni {
 		
 	})
 	
-	/**Cochecha todas las plantas listas del tablero que esten listas (Danny) */
+	/*******************************************************************************************/
+	
+	/**Controles de cosecha y venta */
+	
+	/**Cochecha todas las plantas listas del tablero que esten listas */
 	keyboard.x().onPressDo({ 
 		toni.cosecharTodo()
 	})
 	
-	/**Cosecha las plantas listas en la posiscion actaual de Toni, si no
+	/**Cosecha las plantas listas en la posición actaual de Toni, si no
       *está lista para cosechar, toni avisa y no cosecha nada, y si no hay
-      *una planta en la celda actaul, avisa que no hay una planta. (Danny) */
+      *una planta en la celda actual, avisa que no hay una planta. */
 	keyboard.c().onPressDo({ 
 		if (toni.sobreUnaPlanta()) {
 			toni.cosechar(game.uniqueCollider(toni))
@@ -125,26 +124,33 @@ program huertaDeToni {
 		}	
 	})
 	
-	/**Vende todas las plantas cosechadas hasta el momento (Danny) HAY QUE MODIFICAR  */
+	/**Vende todas las plantas cosechadas hasta el momento solo si toni se encuentra en un mercado */
 	keyboard.v().onPressDo({ toni.venderCosecha() })
 	
-	
-	/**Devuelve la cantidad de oro de toni y cuantas plantas le queda para vender (Danny) */
+	/**Devuelve la cantidad de oro de toni y cuantas plantas le queda para vender */
 	keyboard.space().onPressDo({ 
 		game.say(toni, "Tengo " + toni.oro() + " monedas" + 
 		" y me quedan " + toni.plantasCosechadas().size() + " plantas para vender" )
 	})
 	
-	/** Al presionar F, muestra el mensaje que está fumigado. (Caro) */
+	/*******************************************************************************************/
+	
+	/**Fumigar y llover */
+	
+	/** Al presionar F, fumiga y toni muestra el mensaje que está fumigado. */
 	keyboard.f().onPressDo({ 
 		pachamama.fumigar()
 		game.say(toni, "Está fumigado")
 	})
 	
-	/** Al presionar L, logrará que llueva y las plantas se rieguen (Caro) */
+	/** Al presionar L, logrará que llueva y las plantas se rieguen */
 	keyboard.l().onPressDo({ pachamama.llover() })
 	
-	/*Al chocar con la pacha, Toni hace una ofrenda (Ro) */
+	/*******************************************************************************************/
+	
+	/**Ofrenda a la pachamama */
+	
+	/**Al chocar con la pacha, Toni hace una ofrenda */
 	game.whenCollideDo(toni, { obj => 
 		if (toni.agunaPlantaLista() && obj.equals(pachamama)) {
 			toni.hacerOfrenda()
@@ -152,6 +158,8 @@ program huertaDeToni {
 		    pachamama.cambiarDePosicion()
 		}
 	})
+	
+	/*******************************************************************************************/
 	
 	game.start()
 }

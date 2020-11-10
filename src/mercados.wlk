@@ -8,11 +8,14 @@ class Mercado {
 	const property image = "mercado.png"
 	const property tipo = "Mercado"
 	
-	// Indica si las monedas de ese mercado alcanzan para comprar la cosecha
+	/**Indica si las monedas de ese mercado alcanzan para comprar la cosecha */
 	method puedeComprar() {
 		return self.monedas() >= toni.valorDeCosecha()
 	}
 	
+	/**Si el mercado tiene suficientes monedas para cubrir el costo de la cosecha de toni,
+      *compra toda su cosecha y la añadirá a su "mercaderia". En el caso contrario,
+      *avisará que no tiene suficientes monedas e iniformará cuantas tiene. */
 	method comprarCosecha() {
 		if (self.puedeComprar()) {
 			monedas -= toni.valorDeCosecha()
